@@ -1,1 +1,1 @@
-::damage over time tool
+::damage over time too
