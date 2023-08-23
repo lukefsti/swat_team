@@ -4,6 +4,8 @@ import time
 from pynput import keyboard, mouse
 import win32gui
 import threading
+import win32process
+import win32api
 
 # Configuration
 log_dir = ""
@@ -11,14 +13,10 @@ logging.basicConfig(filename=(log_dir + "activity_log.txt"), level=logging.DEBUG
 
 # Global State
 LAST_KEY_TIME = time.time()
-LAST_ACTIVE_TIME = time.time()
 CURRENT_WINDOW_TITLE = None
 WINDOW_ACTIVE_START_TIME = None
 IS_MOUSE_DRAGGING = False
 AGGREGATED_MOUSE_MOVEMENTS = []
-
-# User Activity: Idle Time Detection Configuration
-IDLE_TIME_THRESHOLD = 10  # 10 seconds
 
 def get_active_window_info():
     try:
@@ -63,19 +61,8 @@ def on_move(x, y):
             LAST_ACTIVE_TIME = time.time()
 
         LAST_ACTIVE_TIME = time.time()
-        check_for_idle()
     except Exception as e:
         logging.error(f"Error during mouse move: {e}")
-
-def check_for_idle():
-    global LAST_ACTIVE_TIME
-    try:
-        idle_duration = time.time() - LAST_ACTIVE_TIME
-        if idle_duration > IDLE_TIME_THRESHOLD:
-            log_event('idle', {'duration': idle_duration})
-            LAST_ACTIVE_TIME = time.time()
-    except Exception as e:
-        logging.error(f"Error during idle check: {e}")
 
 def on_key_press(key):
     global LAST_KEY_TIME, LAST_ACTIVE_TIME
@@ -86,12 +73,11 @@ def on_key_press(key):
         log_event('keypress', {'key': key_data, 'time_since_last_key': time_since_last_key})
 
         LAST_ACTIVE_TIME = time.time()
-        check_for_idle()
     except Exception as e:
         logging.error(f"Error during on_key_press check: {e}")
 
 def on_click(x, y, button, pressed):
-    global LAST_ACTIVE_TIME, IS_MOUSE_DRAGGING, AGGREGATED_MOUSE_MOVEMENTS  # added AGGREGATED_MOUSE_MOVEMENTS here
+    global LAST_ACTIVE_TIME, IS_MOUSE_DRAGGING, AGGREGATED_MOUSE_MOVEMENTS
     try:
         if pressed:
             log_event('mouse_click_down', {'x': x, 'y': y, 'button': str(button)})
@@ -104,19 +90,35 @@ def on_click(x, y, button, pressed):
             IS_MOUSE_DRAGGING = False
 
         LAST_ACTIVE_TIME = time.time()
-        check_for_idle()
     except Exception as e:
         logging.error(f"Error during on_click check: {e}")
 
 def get_active_window_details():
     try:
         hwnd = win32gui.GetForegroundWindow()
+        
+        # Basic Details
         title = win32gui.GetWindowText(hwnd)
         class_name = win32gui.GetClassName(hwnd)
         rect = win32gui.GetWindowRect(hwnd)
         location = {'top_left': (rect[0], rect[1]), 'bottom_right': (rect[2], rect[3])}
+        
+        # Get Process ID and then the associated executable name
+        _, process_id = win32process.GetWindowThreadProcessId(hwnd)
+        process_handle = win32api.OpenProcess(0x1000, False, process_id)  # PROCESS_QUERY_INFORMATION = 0x1000
+        exe_name = win32process.GetModuleFileNameEx(process_handle, 0)
+        win32api.CloseHandle(process_handle)
+
+        # Window Styles and Attributes
+        window_style = win32gui.GetWindowLong(hwnd, win32gui.GWL_STYLE)
+        window_ex_style = win32gui.GetWindowLong(hwnd, win32gui.GWL_EXSTYLE)
+        is_visible = win32gui.IsWindowVisible(hwnd)
+
+        # Parent Window Details
         parent_hwnd = win32gui.GetParent(hwnd)
         parent_title = win32gui.GetWindowText(parent_hwnd) if parent_hwnd else None
+
+        # Child Windows
         child_windows = []
 
         def enum_child(hwnd, _):
@@ -129,12 +131,17 @@ def get_active_window_details():
             'class_name': class_name,
             'location': location,
             'parent_title': parent_title,
-            'children': [title for _, title in child_windows if title]
+            'children': [title for _, title in child_windows if title],
+            'process_id': process_id,
+            'executable_name': exe_name,
+            'window_style': window_style,
+            'window_extended_style': window_ex_style,
+            'is_visible': is_visible
         }
         
         return window_details
     except Exception as e:
-        logging.error(f"Error during get_active_window_details check: {e}")
+        print(f"Error getting window details: {e}")
         return None
 
 def check_for_active_window_change():
