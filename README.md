@@ -35,13 +35,31 @@ This repository hosts a collection of tools named after SWAT team members. <br> 
 
 ---
 
-<h3 align="center">Currently working on</h3>
+<h3 align="center">🔍 The Vision</h3>
+<p align="center">
+In the digital age, every tool has its place. But what if tools could evolve, could coalesce into something more powerful? This project aims not just to provide a plethora of individual software solutions, but to weave them together, forming a digital tapestry where modules combine and interchange seamlessly.
+</p>
+<h4 align="center">🧩 Modular App</h4>
+<p align="center">
+The horizon holds a glimpse of a grand design: a master application. Within this application, users can integrate and utilize any combination of our tools, running them either in isolation or in tandem. Like gears in a clock, each tool, or 'module', will play its part, synchronized, yet independent.
+</p>
+<h4 align="center">🔧 Installation Options</h4>
+<p align="center">
+As we strive for flexibility and user empowerment, at the completion of this project, users will have options. They can choose to install each tool as a standalone entity or use a comprehensive installer, where they can handpick from a smorgasbord of utilities, customizing their digital toolbox.
+</p>
+<h4 align="center">⚙️ Work in Progress</h4>
+<p align="center">
+Patience is a virtue, as every masterpiece takes time. Currently, the crucible holds the following tools, each undergoing rigorous development:
+</p>
+- **EagleEye** - Like the piercing gaze of the raptor, it gathers extensive data from a PC.
+- **ShadowStalk** - Silently, it monitors, always watching, capturing every move over a PC's duration.
+- **SmokeMirage** - The digital illusionist, executing commands to bewilder and confuse the user.
+- **ThunderBlow** - With the force of a storm, it inflicts significant damage to a PC.
+- **VenomStrike** - Silent but deadly, it gradually damages a PC over time.
 
-- **EagleEye** - Gathers extensive data from a PC.
-- **ShadowStalk** - Monitors a PC over a duration of time.
-- **SmokeMirage** - Executes commands on a PC to confuse the user.
-- **ThunderBlow** - Inflicts significant damage to a PC.
-- **VenomStrike** - Gradually damages a PC over time.
+<p align="center">
+As for the other tools? They reside in the nebulous realm of ideation. They might metamorphose, or even vanish, but what remains will be the embodiment of innovation. Stay tuned for this evolving narrative!
+</p>
 
 ---
 
