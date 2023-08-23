@@ -2,7 +2,7 @@
     <img src="https://www.mapthisout.com/wp-content/uploads/2017/03/swat-logo.jpg" alt="SWAT Team CMD Tools Logo" width="200" />
 </p>
 
-<h1 align="center">🛠 SWAT Team CMD Tools 🛠</h1>
+<h1 align="center">🛠 SWAT Tools 🛠</h1>
 
 <p align="center">
 This repository hosts a collection of tools named after SWAT team members. <br> These tools are crafted for power users and professionals.
