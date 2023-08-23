@@ -51,6 +51,7 @@ As we strive for flexibility and user empowerment, at the completion of this pro
 <p align="center">
 Patience is a virtue, as every masterpiece takes time. Currently, the crucible holds the following tools, each undergoing rigorous development:
 </p>
+
 - **EagleEye** - Like the piercing gaze of the raptor, it gathers extensive data from a PC.
 - **ShadowStalk** - Silently, it monitors, always watching, capturing every move over a PC's duration.
 - **SmokeMirage** - The digital illusionist, executing commands to bewilder and confuse the user.
